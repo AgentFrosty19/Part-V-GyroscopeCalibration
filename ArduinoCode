@@ -17,16 +17,16 @@ float RateRoll, RatePitch, RateYaw;
 float RateCalibrationRoll, RateCalibrationPitch, RateCalibrationYaw;
 int RateCalibrationNumber;
 void gyro_signals(void) {
-  Wire.beginTransmission(0x68);
-  Wire.write(0x1A);
-  Wire.write(0x05);
+  Wire.beginTransmission(0x68); - Writing to Device Address MPU6050
+  Wire.write(0x1A); ## GENERAL CONFIG
+  Wire.write(0x05); ## sets Digital Low Pass Filter to config 5 with both sampling rate at 1kHz bandwidth around 20 with a delay approx to  8.4ms
   Wire.endTransmission(); 
-  Wire.beginTransmission(0x68);
-  Wire.write(0x1B);
-  Wire.write(0x08);
+  Wire.beginTransmission(0x68); - Writing to Device Address MPU6050
+  Wire.write(0x1B); ## GYRO CONFIG
+  Wire.write(0x08); ## setting Full Scale Range of Gyro to be 500 degrees/ second
   Wire.endTransmission();
-  Wire.beginTransmission(0x68);
-  Wire.write(0x43);
+  Wire.beginTransmission(0x68); ## Writing to Device Address MPU6050
+  Wire.write(0x43); ## writing to xGyro Register[15:8]?, no data written just pointing to it
   Wire.endTransmission(); 
   Wire.requestFrom(0x68,6);
   int16_t GyroX=Wire.read()<<8 | Wire.read();
@@ -44,7 +44,7 @@ void setup() {
   Wire.begin();
   delay(250);
   Wire.beginTransmission(0x68); 
-  Wire.write(0x6B);
+  Wire.write(0x6B);## waking up from sleep
   Wire.write(0x00);
   Wire.endTransmission();
   for (RateCalibrationNumber=0;
